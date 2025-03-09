@@ -52,6 +52,7 @@ $primary-color: #48a3ffe3;
 
     .login {
         border-radius: 5%;
+        padding: 20px;
 
         .container {
             width: 100%;
@@ -80,13 +81,13 @@ $primary-color: #48a3ffe3;
         height: 40px;
 
         .text {
-            font-size: 18px;
             width: 100%;
             height: 100%;
             flex: 1;
 
             .el-input {
                 height: 100%;
+                font-size: 18px;
             }
         }
     }
@@ -104,8 +105,10 @@ $primary-color: #48a3ffe3;
         width: 80%;
         height: 50px;
         padding: 12px 20px;
+
         .el-button {
             height: 100%;
+            font-size: 18px;
         }
     }
 
