@@ -14,7 +14,7 @@
       "useUnknownInCatchVariables": false,
       "sourceMap": true,
       "baseUrl": ".",
-      "types": ["webpack-env", "w3c-web-usb", "w3c-web-serial", "unplugin-icons/types/vue", "@types/node"],
+      "types": ["webpack-env", "w3c-web-usb", "w3c-web-serial", "unplugin-icons/types/vue", "@types/node", "unplugin-vue-components/resolvers"],
       "paths": {
           "@/*": ["src/*"]
       },
