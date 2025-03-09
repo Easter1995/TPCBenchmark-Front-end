@@ -15,15 +15,21 @@ const password = ref('')
                 </div>
                 <div class="body">
                     <div class="inputbox">
-                        <div><i class="fa-solid fa-user" style="color: #418dda;"></i></div>
                         <div class="text">
-                            <el-input v-model="username" placeholder="用户名" clearable />
+                            <el-input v-model="username" placeholder="用户名" clearable>
+                                <template #prefix>
+                                    <i class="fa-solid fa-user" style="color: #418dda;"></i>
+                                </template>
+                            </el-input>
                         </div>
                     </div>
                     <div class="inputbox">
-                        <div><i class="fa-solid fa-lock" style="color: #418dda;"></i></div>
                         <div class="text">
-                            <el-input v-model="password" placeholder="密码" show-password />
+                            <el-input v-model="password" placeholder="密码" show-password>
+                                <template #prefix>
+                                    <i class="fa-solid fa-lock" style="color: #418dda;"></i>
+                                </template>
+                            </el-input>
                         </div>
                     </div>
                 </div>
@@ -74,9 +80,6 @@ $primary-color: #48a3ffe3;
     padding: 10px;
 
     .inputbox {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
         margin: 20px 0 0 0;
         height: 40px;
 
