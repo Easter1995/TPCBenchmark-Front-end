@@ -19,7 +19,7 @@ const onSecBtnClick = () => {
 </script>
 
 <template>
-    <div class="wrapper" style="background-color: rgb(98 176 255 / 62%);">
+    <div class="wrapper" style="background-image: linear-gradient(to top, #fff1eb 0%, #ace0f9 100%);">
         <el-card class="login">
             <div class="container">
                 <div class="header">
