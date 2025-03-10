@@ -4,6 +4,18 @@ import { ref } from 'vue';
 
 const username = ref('')
 const password = ref('')
+const password_ = ref('')
+const mainBtn = ref('登录')
+const secondBtn = ref('注册')
+const isRegis = ref(false)
+
+const onSecBtnClick = () => {
+    isRegis.value = !isRegis.value
+    let tmp = mainBtn.value
+    mainBtn.value = secondBtn.value
+    secondBtn.value = tmp
+}
+
 </script>
 
 <template>
@@ -12,6 +24,9 @@ const password = ref('')
             <div class="container">
                 <div class="header">
                     电商数据管理系统
+                </div>
+                <div v-if="isRegis" class="header2">
+                    新用户注册
                 </div>
                 <div class="body">
                     <div class="inputbox">
@@ -32,13 +47,22 @@ const password = ref('')
                             </el-input>
                         </div>
                     </div>
+                    <div class="inputbox" v-show="isRegis">
+                        <div class="text">
+                            <el-input v-model="password_" placeholder="确认密码" show-password>
+                                <template #prefix>
+                                    <i class="fa-solid fa-square-check" style="color: #418dda;"></i>
+                                </template>
+                            </el-input>
+                        </div>
+                    </div>
                 </div>
                 <div class="footer">
-                    <div class="login-btn">
-                        <el-button style="width: 100%;" type="primary" plain>登 录</el-button>
+                    <div class="main-btn">
+                        <el-button style="width: 100%;" type="primary" plain>{{ mainBtn }}</el-button>
                     </div>
-                    <div class="register-btn">
-                        <el-button type="primary" link>注 册</el-button>
+                    <div class="second-btn">
+                        <el-button type="primary" @click="onSecBtnClick" link>{{ secondBtn }}</el-button>
                     </div>
                 </div>
             </div>
@@ -76,6 +100,12 @@ $primary-color: #48a3ffe3;
     text-align: center;
 }
 
+.header2 {
+    font-size: 30px;
+    color: $primary-color;
+    text-align: center;
+}
+
 .body {
     padding: 10px;
 
@@ -104,7 +134,7 @@ $primary-color: #48a3ffe3;
     justify-content: center;
     align-items: center;
 
-    .login-btn {
+    .main-btn {
         width: 80%;
         height: 50px;
         padding: 12px 20px;
@@ -115,7 +145,7 @@ $primary-color: #48a3ffe3;
         }
     }
 
-    .register-btn {
+    .second-btn {
         text-align: center;
         width: 100%;
     }
