@@ -9,12 +9,19 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
-      resolvers: [ElementPlusResolver()], // 自动注册 Element Plus 组件
+      resolvers: [ElementPlusResolver()],
     }),
   ],
+  server: {
+    proxy: {
+      '/user': {
+        target: 'http://localhost:8085'
+      }
+    }
+  },
   resolve: {
     alias: {
-      '@': normalizePath(path.resolve(__dirname, './src')) // 强制统一路径格式[1,7](@ref)
+      '@': normalizePath(path.resolve(__dirname, './src'))
     }
   },
 })

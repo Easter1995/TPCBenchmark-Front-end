@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import { ElCard } from 'element-plus';
-import { ref } from 'vue';
+import { ElCard, ElNotification } from 'element-plus';
+import { nextTick, ref } from 'vue';
+import { userLogin, userRegister } from '@/api/auth';
+import { getUserInfo, writeUserInfo } from '@/utils/user';
+import router from '@/router';
 
 const username = ref('')
 const password = ref('')
@@ -9,11 +12,90 @@ const mainBtn = ref('登录')
 const secondBtn = ref('注册')
 const isRegis = ref(false)
 
+const clearInfo = () => {
+    username.value = ''
+    password.value = ''
+    password_.value = ''
+}
+
 const onSecBtnClick = () => {
     isRegis.value = !isRegis.value
     let tmp = mainBtn.value
     mainBtn.value = secondBtn.value
     secondBtn.value = tmp
+    clearInfo()
+}
+
+const doLogin = async () => {
+    if (!username.value || !password.value) {
+        ElNotification.error({
+            title: '登录失败',
+            message: '无效的用户名或密码',
+        })
+        return
+    }
+    try {
+        const response = await userLogin(username.value, password.value);
+        const { data: info, message, code } = response.data;
+        if (code !== 200) {
+            ElNotification.error({
+                message
+            })
+            return
+        } 
+        const { token: token, name, role } = info
+        // 写入用户信息
+        writeUserInfo(info)
+        // console.log('piniaUserInfo', getUserInfo())
+        ElNotification({
+            type: 'success',
+            message,
+            duration: 1000
+        })
+        await nextTick()
+        router.push('/denied')
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+const doRegister = async () => {
+    if (!username.value || !password.value || !password_.value) {
+        ElNotification.error({
+            title: '注册失败',
+            message: '无效的用户名或密码',
+        })
+        return
+    } else if (password.value !== password_.value) {
+        ElNotification.error({
+            title: 'register failed',
+            message: '两次输入的密码不一致'
+        })
+        return
+    }
+    try {
+        const response = await userRegister(username.value, password.value)
+        const { data: info, message } = response.data
+        if (info !== null) {
+                ElNotification({
+                type: 'success',
+                message,
+                duration: 1000
+            })
+        } else {
+            ElNotification.error({
+                message
+            })
+        }
+        
+    } catch(e) {
+        console.log(e)
+    }
+}
+
+const doAction = () => {
+    if (isRegis.value) doRegister()
+    else doLogin()
 }
 
 </script>
@@ -31,7 +113,7 @@ const onSecBtnClick = () => {
                 <div class="body">
                     <div class="inputbox">
                         <div class="text">
-                            <el-input v-model="username" placeholder="用户名" clearable>
+                            <el-input v-model="username" placeholder="用户名" @keyup.enter="doAction" clearable>
                                 <template #prefix>
                                     <i class="fa-solid fa-user" style="color: #418dda;"></i>
                                 </template>
@@ -40,7 +122,7 @@ const onSecBtnClick = () => {
                     </div>
                     <div class="inputbox">
                         <div class="text">
-                            <el-input v-model="password" placeholder="密码" show-password>
+                            <el-input v-model="password" placeholder="密码" @keyup.enter="doAction" show-password>
                                 <template #prefix>
                                     <i class="fa-solid fa-lock" style="color: #418dda;"></i>
                                 </template>
@@ -49,7 +131,7 @@ const onSecBtnClick = () => {
                     </div>
                     <div class="inputbox" v-show="isRegis">
                         <div class="text">
-                            <el-input v-model="password_" placeholder="确认密码" show-password>
+                            <el-input v-model="password_" placeholder="确认密码" @keyup.enter="doAction" show-password>
                                 <template #prefix>
                                     <i class="fa-solid fa-square-check" style="color: #418dda;"></i>
                                 </template>
@@ -58,7 +140,7 @@ const onSecBtnClick = () => {
                     </div>
                 </div>
                 <div class="footer">
-                    <div class="main-btn">
+                    <div class="main-btn" @click="doAction">
                         <el-button style="width: 100%;" type="primary" plain>{{ mainBtn }}</el-button>
                     </div>
                     <div class="second-btn">

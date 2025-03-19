@@ -1,5 +1,11 @@
+import { userInfoStore } from '@/store'
+import { storeToRefs } from 'pinia'
 import { createRouter, createWebHistory, RouteLocationRaw } from 'vue-router'
 
+enum Roles {
+    ADMIN = 'ADMIN',
+    USER = 'USER'
+}
 
 const routes = [
     {
@@ -11,10 +17,14 @@ const routes = [
         name: 'login',
         component: () => import('@/views/Login.vue'),
         meta: {
-            login: false,
-        },
+            roles: [Roles.ADMIN, Roles.USER]
+        }
     },
-
+    {
+        path: '/denied',
+        name: 'denied',
+        component: () => import('@/views/Denied.vue')
+    }
 ]
 
 const router = createRouter({
@@ -23,12 +33,26 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    if (to.meta.login !== false) {
-        if (to.path !== '/login') {
-            return next('/login')
-        }
+    const userStore = userInfoStore()
+    const { isLogin, role } = storeToRefs(userStore)
+    console.log('路由守卫', isLogin.value, role.value)
+    if (to.path === '/login') {
+        next()
+        return
     }
-    next()
+    if (isLogin.value) {
+        if (Array.isArray(to.meta.roles)) {
+            if (to.meta.roles.includes(role.value)) {
+                next()
+            } else {
+                next('/denied')
+            }
+        } else {
+            next()
+        }
+    } else {
+        next('/login')
+    }
 })
 
 export default router
