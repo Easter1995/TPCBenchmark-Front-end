@@ -9,7 +9,7 @@ export default {
 <template>
     <section class="sectionbox">
         <el-card>
-            <el-empty description="施工中"></el-empty>
+            <el-empty description="无权限"></el-empty>
         </el-card>
     </section>
 </template>

@@ -18,6 +18,5 @@ export function writeUserInfo(userInfo: loginData) {
 }
 
 export function delUserInfo() {
-    const userStore = userInfoStore()
-    userStore.clearUserInfo()
+    delete localStorage['userInfo']
 }

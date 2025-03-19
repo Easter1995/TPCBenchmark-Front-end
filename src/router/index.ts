@@ -1,4 +1,5 @@
 import { userInfoStore } from '@/store'
+import path from 'path'
 import { storeToRefs } from 'pinia'
 import { createRouter, createWebHistory, RouteLocationRaw } from 'vue-router'
 
@@ -15,10 +16,19 @@ const routes = [
     {
         path: '/login',
         name: 'login',
-        component: () => import('@/views/Login.vue'),
-        meta: {
-            roles: [Roles.ADMIN, Roles.USER]
-        }
+        component: () => import('@/views/Login.vue')
+    },
+    {
+        path: '/home',
+        name: 'home',
+        component: () => import('@/views/BasicLayout.vue'),
+        children: [
+            {
+                path: '', // 默认子路由
+                name: 'home-default',
+                component: () => import('@/views/sysManage/index.vue')
+            }
+        ]
     },
     {
         path: '/denied',

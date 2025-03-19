@@ -15,8 +15,6 @@ const locale = zhCn
 <style lang="scss" scoped>
 html,
 body {
-    margin: 0;
-    padding: 0;
     min-height: 100%;
     width: 100%;
     overscroll-behavior: none;

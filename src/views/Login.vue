@@ -53,7 +53,7 @@ const doLogin = async () => {
             duration: 1000
         })
         await nextTick()
-        router.push('/denied')
+        router.replace('/home')
     } catch (e) {
         console.log(e)
     }

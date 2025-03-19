@@ -13,6 +13,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html, body, #akaorange {
+  height: 100%; 
+  width: 100%;
+}
+
 body {
   margin: 0;
   display: flex;
@@ -28,12 +33,6 @@ h1 {
 
 .card {
   padding: 2em;
-}
-
-#app {
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
 }
 
 @media (prefers-color-scheme: light) {
