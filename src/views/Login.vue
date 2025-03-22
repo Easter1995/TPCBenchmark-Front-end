@@ -53,7 +53,7 @@ const doLogin = async () => {
             duration: 1000
         })
         await nextTick()
-        router.replace('/home')
+        router.replace('/tpc')
     } catch (e) {
         console.log(e)
     }

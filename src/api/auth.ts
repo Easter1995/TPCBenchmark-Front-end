@@ -1,4 +1,4 @@
-import { IUserLoginResponse, IUserRegisterResponse, loginData, regisData } from '@/typings/userResponse'
+import { IUserResponse, loginData, regisData } from '@/typings/user'
 import fly, { FlyPromise } from 'flyio'
 
 /**
@@ -10,7 +10,7 @@ import fly, { FlyPromise } from 'flyio'
 export function userLogin(
     username: string,
     password: string,
-): FlyPromise<IUserLoginResponse<loginData>> {
+): FlyPromise<IUserResponse<loginData>> {
     return fly.post(
         '/users/login',
         JSON.stringify({
@@ -25,10 +25,16 @@ export function userLogin(
     )
 }
 
+/**
+ * 用户注册
+ * @param username 用户名
+ * @param password 密码
+ * @returns 
+ */
 export function userRegister(
     username: string,
     password: string,
-): FlyPromise<IUserRegisterResponse<regisData>> {
+): FlyPromise<IUserResponse<regisData>> {
     return fly.post(
         '/users/register',
         JSON.stringify({

@@ -8,10 +8,12 @@ enum Roles {
     USER = 'USER'
 }
 
+
+
 const routes = [
     {
         path: '/',
-        redirect: '/login',
+        redirect: '/tpc',
     },
     {
         path: '/login',
@@ -19,7 +21,7 @@ const routes = [
         component: () => import('@/views/Login.vue')
     },
     {
-        path: '/home',
+        path: '/tpc',
         name: 'home',
         component: () => import('@/views/BasicLayout.vue'),
         children: [
@@ -27,7 +29,36 @@ const routes = [
                 path: '', // 默认子路由
                 name: 'home-default',
                 component: () => import('@/views/sysManage/index.vue')
-            }
+            },
+            // 用户管理
+            {
+                path: '/usermanage',
+                name: 'usermanage',
+                redirect: '/usermanage/approve',
+                children: [
+                    {
+                        path: 'approve',
+                        name: 'approve',
+                        component: () => import('@/views/userManage/approveUser.vue'),
+                        meta: {
+                            title: '用户审批',
+                            icon: 'Check'
+                        }
+                    },
+                    {
+                        path: 'delete',
+                        name: 'delete',
+                        component: () => import('@/views/userManage/delUser.vue'),
+                        meta: {
+                            title: '删除用户',
+                            icon: 'Delete'
+                        }
+                    },
+                ],
+                meta: {
+                    roles: [Roles.ADMIN]
+                }
+            },
         ]
     },
     {
@@ -45,7 +76,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const userStore = userInfoStore()
     const { isLogin, role } = storeToRefs(userStore)
-    console.log('路由守卫', isLogin.value, role.value)
+    // console.log('路由守卫', isLogin.value, role.value)
     if (to.path === '/login') {
         next()
         return
@@ -53,6 +84,7 @@ router.beforeEach(async (to, from, next) => {
     if (isLogin.value) {
         if (Array.isArray(to.meta.roles)) {
             if (to.meta.roles.includes(role.value)) {
+                console.log('路由守卫生效')
                 next()
             } else {
                 next('/denied')

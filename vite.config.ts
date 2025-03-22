@@ -14,7 +14,7 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/user': {
+      '/users': {
         target: 'http://localhost:8085'
       }
     }

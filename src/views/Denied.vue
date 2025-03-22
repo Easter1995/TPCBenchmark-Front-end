@@ -7,9 +7,7 @@ export default {
 }
 </script>
 <template>
-    <section class="sectionbox">
-        <el-card>
-            <el-empty description="无权限"></el-empty>
-        </el-card>
+    <section class="sectionbox" style="height: 100%;">
+        <el-empty description="无权限"></el-empty>
     </section>
 </template>

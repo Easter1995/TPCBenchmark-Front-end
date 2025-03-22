@@ -1,4 +1,4 @@
-import { loginData, userInfo } from "@/typings/userResponse"
+import { loginData, userInfo } from "@/typings/user"
 import { userInfoStore } from "@/store/index"
 
 export function getUserInfo(): userInfo {
