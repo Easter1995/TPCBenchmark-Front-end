@@ -7,11 +7,14 @@ import { onMounted, ref } from 'vue';
 const userList = ref<IUserApproveData[]>([])
 const selectedIds = ref<Array<number>>([])
 const tableRef = ref()
+const loading = ref(true)
 
 const approveListInit = async () => {
+    loading.value = true
     const response = await getApproveList()
     const { data } = response.data
     userList.value = data.users
+    loading.value = false
 }
 onMounted(() => approveListInit())
 
@@ -24,6 +27,7 @@ const handleCancel = () => {
 }
 
 const handleSubmit = async () => {
+    loading.value = true
     const response = await approveUsers(selectedIds.value)
     const { message, data, code } = response.data
     if (code !== 200) {
@@ -37,6 +41,7 @@ const handleSubmit = async () => {
         })
         await approveListInit()
     }
+    loading.value = false
 }
 </script>
 
@@ -44,8 +49,14 @@ const handleSubmit = async () => {
     <ElCard>
         <div class="title">用户审批</div>
         <div class="main">
-            <ElTable :data="userList" row-key="id" ref="tableRef" @selection-change="handleSelection"
-                style="width: 100%;">
+            <ElTable 
+                :data="userList" 
+                v-loading="loading"
+                row-key="id" 
+                ref="tableRef" 
+                @selection-change="handleSelection"
+                style="width: 100%;"
+            >
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="用户id" prop="id" />
                 <el-table-column label="用户名" prop="name" />
@@ -61,6 +72,7 @@ const handleSubmit = async () => {
 
 <style scoped lang="scss">
 .main {
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;

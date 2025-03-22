@@ -40,19 +40,11 @@ const routes = [
                         path: 'approve',
                         name: 'approve',
                         component: () => import('@/views/userManage/approveUser.vue'),
-                        meta: {
-                            title: '用户审批',
-                            icon: 'Check'
-                        }
                     },
                     {
                         path: 'delete',
                         name: 'delete',
                         component: () => import('@/views/userManage/delUser.vue'),
-                        meta: {
-                            title: '删除用户',
-                            icon: 'Delete'
-                        }
                     },
                 ],
                 meta: {

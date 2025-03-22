@@ -1,5 +1,9 @@
 <script setup lang="ts">
+import router from '@/router'
 import {
+    House,
+    CircleCheck,
+    Delete,
     PieChart,
     Service,
     DataAnalysis,
@@ -7,19 +11,28 @@ import {
     User,
     Setting,
 } from '@element-plus/icons-vue'
+
 const handleOpen = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
 }
 const handleClose = (key: string, keyPath: string[]) => {
     console.log(key, keyPath)
 }
-
+const backToHome = () => {
+    router.push('/tpc')
+}
 </script>
 
 <template>
     <div class="nav-container" style="height: 100%;">
-        <div class="title">电商数据管理系统</div>
-        <el-menu router @open="handleOpen" @close="handleClose" style="border: none; flex-grow: 1">
+        <button class="title" @click="backToHome">
+            <el-icon>
+                <House />
+            </el-icon>
+            <div class="text">电商数据管理系统 </div>
+        </button>
+        <el-menu router :default-active="$route.path" @open="handleOpen" @close="handleClose"
+            style="border: none; flex-grow: 1">
             <el-sub-menu index="1">
                 <template #title>
                     <el-icon>
@@ -35,6 +48,18 @@ const handleClose = (key: string, keyPath: string[]) => {
                     </el-icon>
                     <span>用户管理</span>
                 </template>
+                <el-menu-item index="/usermanage">
+                    <el-icon>
+                        <CircleCheck />
+                    </el-icon>
+                    <span>用户审批</span>
+                </el-menu-item>
+                <el-menu-item index="/usermanage/delete">
+                    <el-icon>
+                        <Delete />
+                    </el-icon>
+                    <span>用户删除</span>
+                </el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="3">
                 <template #title>
@@ -68,12 +93,25 @@ const handleClose = (key: string, keyPath: string[]) => {
 .nav-container {
     display: flex;
     flex-direction: column;
+
+    .text, .el-icon {
+        color: #000000;
+        transition: color 0.3s ease-in-out;
+    }
+
+    .text:hover, .el-icon:hover {
+        color: #409eff;
+    }
 }
 
 .title {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-size: 130%;
     padding: 20px;
     background-color: #fff;
+    border: none;
+    cursor: pointer;
 }
 </style>
