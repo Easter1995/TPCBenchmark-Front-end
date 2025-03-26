@@ -15,7 +15,11 @@ import Aside from './Aside.vue';
                 <el-header height="100px">
                     <Header></Header>
                 </el-header>
-                <el-main><router-view></router-view></el-main>
+                <el-main>
+                    <ElCard style="overflow-y: auto;">
+                        <router-view></router-view>
+                    </ElCard>
+                </el-main>
             </el-container>
         </el-container>
     </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
+import { getUserInfo } from '@/utils/user'
 import {
     House,
     CircleCheck,
@@ -10,14 +11,12 @@ import {
     Menu as IconMenu,
     User,
     Setting,
+    Upload,
+    Download
 } from '@element-plus/icons-vue'
 
-const handleOpen = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
-const handleClose = (key: string, keyPath: string[]) => {
-    console.log(key, keyPath)
-}
+const userInfo = getUserInfo()
+
 const backToHome = () => {
     router.push('/tpc')
 }
@@ -31,9 +30,9 @@ const backToHome = () => {
             </el-icon>
             <div class="text">电商数据管理系统 </div>
         </button>
-        <el-menu router :default-active="$route.path" @open="handleOpen" @close="handleClose"
+        <el-menu router :default-active="$route.path"
             style="border: none; flex-grow: 1">
-            <el-sub-menu index="1">
+            <el-sub-menu v-if="userInfo.role === 'ADMIN'" index="1">
                 <template #title>
                     <el-icon>
                         <setting />
@@ -41,7 +40,7 @@ const backToHome = () => {
                     <span>系统管理</span>
                 </template>
             </el-sub-menu>
-            <el-sub-menu index="2">
+            <el-sub-menu v-if="userInfo.role === 'ADMIN'" index="2">
                 <template #title>
                     <el-icon>
                         <User />
@@ -68,6 +67,16 @@ const backToHome = () => {
                     </el-icon>
                     <span>数据管理</span>
                 </template>
+                <el-menu-item index="/datamanage/import">
+                    <el-icon>
+                        <Upload />
+                    </el-icon>
+                    <span>数据上传</span>
+                </el-menu-item>
+                <el-menu-item index="/datamanage/export">
+                    <el-icon><Download /></el-icon>
+                    <span>数据导出</span>
+                </el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="4">
                 <template #title>

@@ -12,9 +12,7 @@ const onClick2 = () => {
 </script>
 
 <template>
-    <ElCard>
-        欢迎来到电商数据管理系统~
-    </ElCard>
+    欢迎来到电商数据管理系统~
 </template>
 
 <style scoped lang="scss"></style>

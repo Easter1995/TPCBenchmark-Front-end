@@ -8,8 +8,6 @@ enum Roles {
     USER = 'USER'
 }
 
-
-
 const routes = [
     {
         path: '/',
@@ -51,6 +49,24 @@ const routes = [
                     roles: [Roles.ADMIN]
                 }
             },
+            // 数据管理
+            {
+                path: '/datamanage',
+                name: 'datamanage',
+                redirect: '/datamanage/import',
+                children: [
+                    {
+                        path: 'import',
+                        name: 'import',
+                        component: () => import('@/views/dataManage/Import.vue'),
+                    },
+                    {
+                        path: 'export',
+                        name: 'export',
+                        component: () => import('@/views/dataManage/Export.vue'),
+                    }
+                ]
+            }
         ]
     },
     {

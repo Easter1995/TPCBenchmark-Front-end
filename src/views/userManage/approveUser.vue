@@ -46,28 +46,26 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-    <ElCard>
-        <div class="title">用户审批</div>
-        <div class="main">
-            <ElTable 
-                :data="userList" 
-                v-loading="loading"
-                row-key="id" 
-                ref="tableRef" 
-                @selection-change="handleSelection"
-                style="width: 100%;"
-            >
-                <el-table-column type="selection" width="55" />
-                <el-table-column label="用户id" prop="id" />
-                <el-table-column label="用户名" prop="name" />
-                <el-table-column label="当前状态" prop="status" />
-            </ElTable>
-            <div class="submit">
-                <el-button type="primary" @click="handleSubmit" plain>提 交</el-button>
-                <el-button type="danger" @click="handleCancel" plain>取 消</el-button>
-            </div>
+    <div class="title">用户审批</div>
+    <div class="main">
+        <ElTable 
+            :data="userList" 
+            v-loading="loading"
+            row-key="id" 
+            ref="tableRef" 
+            @selection-change="handleSelection"
+            style="width: 100%;"
+        >
+            <el-table-column type="selection" width="55" />
+            <el-table-column label="用户id" prop="id" />
+            <el-table-column label="用户名" prop="name" />
+            <el-table-column label="当前状态" prop="status" />
+        </ElTable>
+        <div class="submit">
+            <el-button type="primary" @click="handleSubmit" plain>提 交</el-button>
+            <el-button type="danger" @click="handleCancel" plain>取 消</el-button>
         </div>
-    </ElCard>
+    </div>
 </template>
 
 <style scoped lang="scss">
