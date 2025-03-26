@@ -163,6 +163,8 @@ $primary-color: #48a3ffe3;
     align-items: center;
 
     .login {
+        width: 22%;
+        min-width: 300px;
         border-radius: 5%;
         padding: 20px;
 

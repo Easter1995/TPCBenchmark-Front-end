@@ -13,8 +13,7 @@ const onClick2 = () => {
 
 <template>
     <ElCard>
-        <button @click="onClick1">点击</button>
-        <button @click="onClick2">点击</button>
+        欢迎来到电商数据管理系统~
     </ElCard>
 </template>
 

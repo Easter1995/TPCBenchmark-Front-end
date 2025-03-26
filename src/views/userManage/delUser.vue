@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { delUsers, getAllUsers } from '@/api/usermanage';
 import { IUserAllData } from '@/typings/user';
-import { ElCard, ElNotification, ElTable } from 'element-plus';
+import { ElCard, ElNotification, ElTable, TableColumnCtx, TableInstance } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
 const userList = ref<Array<IUserAllData>>([])
 const selectedNames = ref<Array<String>>([])
-const tableRef = ref()
+const tableRef = ref<TableInstance>()
 const loading = ref(true)
 
 const userListInit = async () => {
@@ -46,25 +46,32 @@ const handleSubmit = async () => {
     loading.value = false
 }
 
+const filterHandler = (value: string, row: IUserAllData) => {
+    return row.status === value
+}
+
 </script>
 
 <template>
     <ElCard>
         <div class="title">用户删除</div>
         <div class="main">
-            <ElTable 
-                :data="userList"
-                v-loading="loading" 
-                row-key="name" 
-                ref="tableRef" 
-                @selection-change="handleSelection"
-                style="width: 100%;"
-            >
+            <ElTable :data="userList" v-loading="loading" row-key="name" ref="tableRef"
+                @selection-change="handleSelection" style="width: 100%;">
                 <el-table-column type="selection" width="55" />
                 <el-table-column label="用户id" prop="id" />
                 <el-table-column label="用户名" prop="name" />
                 <el-table-column label="权限" prop="role" />
-                <el-table-column label="当前状态" prop="status" />
+                <el-table-column label="当前状态" :filters="[
+                    { text: 'PENDING', value: 'PENDING' },
+                    { text: 'APPROVED', value: 'APPROVED' }
+                ]" :filter-method="filterHandler">
+                    <template #default="scope">
+                        <el-tag :type="scope.row.status === 'PENDING' ? 'primary' : 'success'" 
+                            disable-transitions>
+                            {{ scope.row.status }}</el-tag>
+                    </template>
+                </el-table-column>
             </ElTable>
             <div class="submit">
                 <el-button type="primary" @click="handleSubmit" plain>提 交</el-button>
