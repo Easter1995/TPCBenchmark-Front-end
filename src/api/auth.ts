@@ -1,5 +1,6 @@
 import { IUserResponse, loginData, regisData } from '@/typings/user'
-import fly, { FlyPromise } from 'flyio'
+import { FlyPromise } from 'flyio'
+import fly from '@/utils/fly'
 
 /**
  * 用户登录
