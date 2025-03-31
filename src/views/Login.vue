@@ -43,7 +43,6 @@ const doLogin = async () => {
             })
             return
         } 
-        const { token: token, name, role } = info
         // 写入用户信息
         writeUserInfo(info)
         // console.log('piniaUserInfo', getUserInfo())
