@@ -16,6 +16,9 @@ export default defineConfig({
     proxy: {
       '/users': {
         target: 'http://localhost:8085'
+      },
+      '/table': {
+        target: 'http://localhost:8085'
       }
     }
   },

@@ -1,23 +1,31 @@
 // 数据管理相关
+export interface ITableResponse<T> {
+    code: number,
+    message: string,
+    data: T
+}
 
 /**
  * 数据导入相关
  */
 export interface ITableInfo {
-    name: string, // 表名
-    lastUpdate: string, // 最后更新日期
-    size: string // 大小
+    tablename: string, // 表名
+    lastupdate: string, // 最后更新日期
 }
-export interface ITableKeyConstrain {
-    key: string, // 属性名
-    type: string // 类型
-    // 可选
-    upperLimit?: number // 上限 <=
-    lowerLimit?: number // 下限 >=
-    notNull?: boolean // 非空
-    primary?: boolean // 主键，默认不是
+export class ITableKeyConstrain {
+    name: string = '';      // 属性名
+    type: string = '';     // 类型
+    upperLimit?: number;   // 上限
+    lowerLimit?: number;   // 下限
+    notNull?: boolean = false;
+    primaryKey?: boolean = false;
+    length?: number
+    
+    constructor(options?: Partial<ITableKeyConstrain>) {
+        Object.assign(this, options);
+    }
 }
 export interface INewTable {
-    name: string, // 表名
-    keys: Array<ITableKeyConstrain>
+    tableName: string, // 表名
+    columns: Array<ITableKeyConstrain>
 }
