@@ -16,6 +16,7 @@ const tableInfoInit = async () => {
     const response = await getTables()
     const { data } = response.data
     tables.value = data
+    isLoading.value = false
 }
 const onAddTableClick = () => {
     isAddingTable.value = true
