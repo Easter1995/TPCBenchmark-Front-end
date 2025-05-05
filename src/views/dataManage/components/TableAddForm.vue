@@ -13,12 +13,42 @@ const newTable = reactive<INewTable>({
 })
 const newKey = reactive(new ITableKeyConstrain())
 const keyFormRef = ref<FormInstance>()
+const tableFormRef = ref<FormInstance>()
+
+const numberValidate = (_rule: any, value: any, callback: any) => {
+    if (!value) {
+        callback()
+    }
+    if (!Number.isInteger(value)) {
+        callback(new Error('必须输入数字'))
+    } else {
+        callback()
+    }
+}
+
 const rules = reactive<FormRules<ITableKeyConstrain>>({
     name: [
-        { required: true, message: '必须填写属性名' }
+        { required: true, message: '必须填写属性名', trigger: 'blur' }
     ],
     type: [
-        { required: true, message: '必须填写属性类型' }
+        { required: true, message: '必须填写属性类型', trigger: 'blur' }
+    ],
+    length: [
+        { validator: numberValidate, trigger: 'blur' }
+    ],
+    upperLimit: [
+        { validator: numberValidate }
+    ],
+    lowerLimit: [
+        { validator: numberValidate }
+    ]
+})
+const tableRules = reactive<FormRules<INewTable>>({
+    tableName: [
+        { required: true, message: '必须填写表名' }
+    ],
+    columns: [
+        { required: true, message: '必须新建属性' }
     ]
 })
 
@@ -36,19 +66,25 @@ const onAddKeyClose = () => {
     isEdit.value = false
 }
 
-const onKeySubmit = () => {
-    if (isEdit.value) {
-        newTable.columns.splice(editIndex.value, 1)
-        isEdit.value = false
+const onKeySubmit = async () => {
+    try {
+        await keyFormRef.value!.validate()
+        const tip = isEdit.value ? '编辑' : '添加'
+        if (isEdit.value) {
+            newTable.columns.splice(editIndex.value, 1)
+            isEdit.value = false
+        }
+        const newInstance = new ITableKeyConstrain({ ...newKey })
+        newTable.columns.push(newInstance)
+        dialogVisible.value = false
+        ElNotification.success({
+            title: `${newKey.name}`,
+            message: `${tip}成功`
+        })
+        onAddKeyClose()
+    } catch {
+        return
     }
-    const newInstance = new ITableKeyConstrain({ ...newKey })
-    newTable.columns.push(newInstance)
-    dialogVisible.value = false
-    ElNotification.success({
-        title: `${newKey.name}`,
-        message: '添加成功'
-    })
-    onAddKeyClose()
 }
 
 const handleKeyValue = () => {
@@ -64,21 +100,27 @@ const handleKeyValue = () => {
 const onTableSubmit = async () => {
     // console.log('----newTable', newTable)
     try {
-        const response = await createTable(newTable.tableName, newTable.columns)
-        const { data, message } = response.data
-        if (data) {
-            ElNotification.success({
-                title: '添加成功',
-                message: `表格${data.tablename}已添加`
-            })
-        } else {
-            ElNotification.error({
-                message
-            })
+        await tableFormRef.value!.validate()
+        try {
+            newTable.tableName = newTable.tableName.trim().toLocaleUpperCase()
+            const response = await createTable(newTable.tableName, newTable.columns)
+            const { data, message } = response.data
+            if (data) {
+                ElNotification.success({
+                    title: '添加成功',
+                    message: `表格${data.tablename}已添加`
+                })
+            } else {
+                ElNotification.error({
+                    message
+                })
+            }
+            emit('cancel')
+        } catch {
+            ElNotification.error({ message: '请求失败' })
         }
-        emit('cancel')
     } catch {
-        ElNotification.error({ message: '请求失败' })
+        return
     }
 }
 
@@ -87,12 +129,16 @@ const handleEdit = (index: number, row: ITableKeyConstrain) => {
     isEdit.value = true
     editIndex.value = index
     Object.assign(newKey, JSON.parse(JSON.stringify(row)))
-    console.log(newTable)
+    // console.log(newTable)
 }
 
 const handleDel = (index: number) => {
     newTable.columns.splice(index, 1)
-    console.log(newTable)
+    // console.log(newTable)
+    ElNotification.success({
+        title: `${newKey.name}`,
+        message: `删除成功`
+    })
 }
 
 </script>
@@ -100,21 +146,25 @@ const handleDel = (index: number) => {
 <template>
     <div class="title">新建表</div>
     <div class="container">
-        <el-form :model="newTable" label-width="auto">
-            <el-form-item label="表名" style="width: 300px;">
+        <el-form :rules="tableRules" :model="newTable" ref="tableFormRef" label-width="auto">
+            <el-form-item label="表名" prop="tableName" style="width: 300px;">
                 <el-input v-model="newTable.tableName"></el-input>
             </el-form-item>
-            <el-form-item label="属性">
+            <el-form-item label="属性" prop="columns">
                 <el-button type="primary" @click="onAddKeyClick" plain>新增属性</el-button>
                 <el-table :data="newTable.columns">
-                    <el-table-column prop="name" label="属性名" />
-                    <el-table-column prop="type" label="类型" />
-                    <el-table-column prop="notNull" label="非空" />
-                    <el-table-column prop="primaryKey" label="主键" />
-                    <el-table-column header-align="center" label="操作">
+                    <el-table-column prop="name" label="属性名" width="200" show-overflow-tooltip />
+                    <el-table-column prop="type" label="类型" width="200" />
+                    <el-table-column prop="notNull" label="非空" width="100" />
+                    <el-table-column prop="primaryKey" label="主键" width="100" />
+                    <el-table-column header-align="center" label="操作" width="400">
                         <template #default="scoped">
-                            <span class="el-button el-button--text el-button--small" @click="handleEdit(scoped.$index, scoped.row)">编辑</span>
-                            <span class="el-button el-button--text el-button--small" @click="handleDel(scoped.$index)">删除</span>
+                            <div class="action-container">
+                                <div class="el-button el-button--text el-button--small"
+                                    @click="handleEdit(scoped.$index, scoped.row)">编辑</div>
+                                <div class="el-button el-button--text el-button--small"
+                                    @click="handleDel(scoped.$index)">删除</div>
+                            </div>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -129,7 +179,7 @@ const handleDel = (index: number) => {
         <div class="key-form-container">
             <el-form :model="newKey" :rules="rules" ref="keyFormRef" label-width="auto">
                 <!-- 名字和类型 -->
-                <el-row :gutter="20">
+                <el-row :gutter="30">
                     <el-col :span="10">
                         <el-form-item prop="name" label="属性名">
                             <el-input v-model="newKey.name"></el-input>
@@ -143,18 +193,18 @@ const handleDel = (index: number) => {
                 </el-row>
                 <!-- 可选字段 -->
                 <el-row>
-                    <el-col :span="6">
-                        <el-form-item label="下限(>=)">
+                    <el-col :span="8">
+                        <el-form-item label="下限(>=)" prop="lowerLimit">
                             <el-input v-model.number="newKey.lowerLimit"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                        <el-form-item label="上限(<=)">
+                    <el-col :span="8">
+                        <el-form-item label="上限(<=)" prop="upperLimit">
                             <el-input v-model.number="newKey.upperLimit"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col :span="6">
-                        <el-form-item label="(字符)长度">
+                    <el-col :span="10">
+                        <el-form-item label="(字符/小数)长度" prop="length">
                             <el-input v-model.number="newKey.length"></el-input>
                         </el-form-item>
                     </el-col>
@@ -181,5 +231,12 @@ const handleDel = (index: number) => {
 .title {
     font-size: large;
     margin-bottom: 30px;
+}
+
+::v-deep .action-container {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    gap: 12px;
 }
 </style>
