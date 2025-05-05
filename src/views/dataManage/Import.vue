@@ -21,8 +21,9 @@ const tableInfoInit = async () => {
 const onAddTableClick = () => {
     isAddingTable.value = true
 }
-const onCancelAddTableClick = () => {
+const onCancelAddTableClick = async () => {
     isAddingTable.value = false
+    await tableInfoInit()
 }
 
 </script>
@@ -30,10 +31,10 @@ const onCancelAddTableClick = () => {
 <template>
     <div class="container">
         <div v-if="!isAddingTable" class="tables">
-            <div v-if="tables.length === 0">
+            <div v-if="tables.length === 0 && !isLoading">
                 <ElEmpty description="数据库空空如也~"></ElEmpty>
             </div>
-            <el-table v-else :data="tables" show-header style="width: 100%;"
+            <el-table v-else v-loading="isLoading" :data="tables" show-header style="width: 100%;"
                 :header-cell-style="{ textAlign: 'center' }" :cell-style="{ textAlign: 'center' }">
                 <el-table-column label="表名" prop="tablename" />
                 <el-table-column label="最近更新" prop="lastupdate" />

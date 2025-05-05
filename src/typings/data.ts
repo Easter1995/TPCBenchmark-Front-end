@@ -15,11 +15,11 @@ export interface ITableInfo {
 export class ITableKeyConstrain {
     name: string = '';      // 属性名
     type: string = '';     // 类型
-    upperLimit?: number;   // 上限
-    lowerLimit?: number;   // 下限
+    upperLimit?: string | number;   // 上限
+    lowerLimit?: string | number;   // 下限
     notNull?: boolean = false;
     primaryKey?: boolean = false;
-    length?: number
+    length?: string | number
     
     constructor(options?: Partial<ITableKeyConstrain>) {
         Object.assign(this, options);

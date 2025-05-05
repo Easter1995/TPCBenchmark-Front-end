@@ -8,18 +8,9 @@ import fly from "@/utils/fly";
 export function createTable(tableName: string, columns: Array<ITableKeyConstrain>): FlyPromise<ITableResponse<ITableInfo>> {
     const requestBody = {
         tableName: tableName,
-        columns: columns.map(col => ({
-            name: col.name,
-            type: col.type,
-            constraints: {
-                upperLimit: col.upperLimit,
-                lowerLimit: col.lowerLimit,
-                notNull: col.notNull,
-                primaryKey: col.primaryKey
-            }
-        }))
+        columns: columns
     }
-
+    console.log('----request body', requestBody)
     return fly.post('/table/create', requestBody)
 }
 
