@@ -4,8 +4,7 @@ import FlyConstrustor from 'flyio/dist/npm/fly'
 import { Fly } from 'flyio/index'
 const fly: Fly = new FlyConstrustor()
 export const flyAny: Fly = new FlyConstrustor()
-import { flyInit, ExtendedRequest as _ExtendedRequest } from './flyMiddleware'
+import { flyInit } from './flyMiddleware'
 
 flyInit(fly)
 export default fly
-export interface ExtendedRequest extends _ExtendedRequest {}

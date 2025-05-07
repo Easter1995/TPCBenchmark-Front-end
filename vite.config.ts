@@ -19,6 +19,11 @@ export default defineConfig({
       },
       '/table': {
         target: 'http://localhost:8085'
+      },
+      '/import': {
+        target: 'http://localhost:8085',
+        changeOrigin: true,
+        secure: false
       }
     }
   },

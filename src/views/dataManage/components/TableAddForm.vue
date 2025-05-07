@@ -62,20 +62,22 @@ const onAddKeyClose = () => {
     dialogVisible.value = false
     Object.assign(newKey, new ITableKeyConstrain())
     keyFormRef.value?.resetFields()
-    handleKeyValue()
     isEdit.value = false
 }
 
 const onKeySubmit = async () => {
     try {
         await keyFormRef.value!.validate()
+        handleKeyValue(newKey)
         const tip = isEdit.value ? '编辑' : '添加'
+        const newInstance = new ITableKeyConstrain({ ...newKey })
         if (isEdit.value) {
             newTable.columns.splice(editIndex.value, 1)
+            newTable.columns.splice(editIndex.value, 0, newInstance)
             isEdit.value = false
+        } else {
+            newTable.columns.push(newInstance)
         }
-        const newInstance = new ITableKeyConstrain({ ...newKey })
-        newTable.columns.push(newInstance)
         dialogVisible.value = false
         ElNotification.success({
             title: `${newKey.name}`,
@@ -87,14 +89,12 @@ const onKeySubmit = async () => {
     }
 }
 
-const handleKeyValue = () => {
-    for (let key of newTable.columns) {
-        if (key.length && typeof key.length === 'string') { key.length = parseInt(key.length) }
-        if (key.upperLimit && typeof key.upperLimit === 'string') { key.upperLimit = parseInt(key.upperLimit) }
-        if (key.lowerLimit && typeof key.lowerLimit === 'string') { key.length = parseInt(key.lowerLimit) }
-        key.name = key.name.trim().toLocaleUpperCase()
-        key.type = key.type.trim().toLocaleUpperCase()
-    }
+const handleKeyValue = (key: ITableKeyConstrain) => {
+    if (key.length && typeof key.length === 'string') { key.length = parseInt(key.length) }
+    if (key.upperLimit && typeof key.upperLimit === 'string') { key.upperLimit = parseInt(key.upperLimit) }
+    if (key.lowerLimit && typeof key.lowerLimit === 'string') { key.lowerLimit = parseInt(key.lowerLimit) }
+    key.name = key.name.replace(/\s+/g, '').toLocaleUpperCase()
+    key.type = key.type.replace(/\s+/g, '').toLocaleUpperCase()
 }
 
 const onTableSubmit = async () => {

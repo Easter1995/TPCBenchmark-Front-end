@@ -33,7 +33,7 @@ export function flyInit(fly: Fly) {
                 router.replace('/login');
                 return new Promise(() => { });
             }
-            return Promise.reject(new Error('请求失败，请稍后重试'));
+            return Promise.reject(err);
         }
     )
 }

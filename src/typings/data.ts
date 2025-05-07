@@ -29,3 +29,14 @@ export interface INewTable {
     tableName: string, // 表名
     columns: Array<ITableKeyConstrain>
 }
+
+export interface IDataImport {
+    tableName: string,
+    file: File | null
+}
+
+export interface IDataImportInfo {
+    tableName: string,
+    totalRecords: number,
+    importedRecords: number
+}
