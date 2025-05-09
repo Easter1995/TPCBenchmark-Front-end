@@ -11,6 +11,7 @@ export interface ITableResponse<T> {
 export interface ITableInfo {
     tablename: string, // 表名
     lastupdate: string, // 最后更新日期
+    progressVO?: IDataImportProgress
 }
 export class ITableKeyConstrain {
     name: string = '';      // 属性名
@@ -37,6 +38,16 @@ export interface IDataImport {
 
 export interface IDataImportInfo {
     tableName: string,
-    totalRecords: number,
-    importedRecords: number
+    taskId: string
+}
+
+export interface IDataImportProgress {
+    taskId: string,
+    tableName: string,
+    totalLines: number,
+    processedLines: number,
+    totalBytes: number,
+    processedBytes: number,
+    percentage: number,
+    status: string
 }
