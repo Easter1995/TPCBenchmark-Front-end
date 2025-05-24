@@ -1,5 +1,4 @@
 import { IUserList, IUserResponse, IUsersApproved } from "@/typings/user";
-import { getUserInfo } from "@/utils/user";
 import { FlyPromise } from "flyio";
 import fly from '@/utils/fly'
 

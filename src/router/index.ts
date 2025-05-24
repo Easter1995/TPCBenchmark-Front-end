@@ -66,6 +66,24 @@ const routes = [
                         component: () => import('@/views/dataManage/Export.vue'),
                     }
                 ]
+            },
+            // 业务查询
+            {
+                path: '/bussinessQuery',
+                name: 'bussinessQuery',
+                redirect: '/bussinessQuery/client',
+                children: [
+                    {
+                        path: 'client',
+                        name: 'client',
+                        component: () => import('@/views/serviceQuery/userQuery.vue'),
+                    },
+                    {
+                        path: 'table',
+                        name: 'table',
+                        component: () => import('@/views/serviceQuery/tableQuery.vue'),
+                    }
+                ]
             }
         ]
     },

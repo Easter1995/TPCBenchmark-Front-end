@@ -12,7 +12,9 @@ import {
     User,
     Setting,
     Upload,
-    Download
+    Download,
+    InfoFilled,
+    Tickets
 } from '@element-plus/icons-vue'
 
 const userInfo = getUserInfo()
@@ -85,6 +87,14 @@ const backToHome = () => {
                     </el-icon>
                     <span>业务查询</span>
                 </template>
+                <el-menu-item index="/bussinessQuery/client">
+                    <el-icon><InfoFilled /></el-icon>
+                    <span>客户查询</span>
+                </el-menu-item>
+                <el-menu-item index="/bussinessQuery/table">
+                    <el-icon><Tickets /></el-icon>
+                    <span>表单查询</span>
+                </el-menu-item>
             </el-sub-menu>
             <el-sub-menu index="5">
                 <template #title>
