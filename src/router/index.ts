@@ -79,9 +79,14 @@ const routes = [
                         component: () => import('@/views/serviceQuery/userQuery.vue'),
                     },
                     {
-                        path: 'table',
-                        name: 'table',
-                        component: () => import('@/views/serviceQuery/tableQuery.vue'),
+                        path: 'order',
+                        name: 'order',
+                        component: () => import('@/views/serviceQuery/orderQuery.vue'),
+                    },
+                    {
+                        path: 'part',
+                        name: 'part',
+                        component: () => import('@/views/serviceQuery/partQuery.vue'),
                     }
                 ]
             }

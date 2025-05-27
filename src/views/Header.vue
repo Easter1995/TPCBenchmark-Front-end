@@ -23,7 +23,7 @@ const doLogout = () => {
             <el-popover>
                 <template #reference>
                     <div class="avatar">
-                        <img src="../../public/static/avatar.jpg" alt="">
+                        <img src="/static/avatar.jpg" alt="">
                     </div>
                 </template>
                 <template #default>

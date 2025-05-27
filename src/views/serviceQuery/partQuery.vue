@@ -1,11 +1,8 @@
 <script lang="ts" setup>
-
 </script>
 
 <template>
-    <div>
-        表单查询
-    </div>
+    <div class="title">零件查询</div>
 </template>
 
 <style lang="scss" scoped></style>
