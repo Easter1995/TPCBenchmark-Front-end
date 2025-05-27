@@ -60,3 +60,13 @@ export interface IShipPriorRes {
     count: number,
     orders: Array<Oinfo>
 }
+
+export interface ISmallOrderQuery {
+    years: number | null,
+    brand: string,
+    container: string
+}
+
+export interface ISmallOrderRes {
+    avgrevenue: number
+}

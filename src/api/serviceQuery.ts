@@ -1,4 +1,4 @@
-import { IClientInfo, IClientQuery, IQueryResponse, IShipPriorQuery, IShipPriorRes } from "@/typings/service";
+import { IClientInfo, IClientQuery, IQueryResponse, IShipPriorQuery, IShipPriorRes, ISmallOrderQuery, ISmallOrderRes } from "@/typings/service";
 import { FlyPromise } from "flyio";
 import fly from "@/utils/fly";
 
@@ -17,6 +17,14 @@ export function getTableInfo(tableName: String): FlyPromise<IQueryResponse<any>>
 export function getShipPrior(param: IShipPriorQuery): FlyPromise<IQueryResponse<IShipPriorRes>> {
     return fly.post(
         '/query/shipping-priority', param, {
+            timeout: 180000
+        }
+    )
+}
+
+export function getSmallOrder(param: ISmallOrderQuery): FlyPromise<IQueryResponse<ISmallOrderRes>> {
+    return fly.post(
+        '/query/small-order', param, {
             timeout: 180000
         }
     )

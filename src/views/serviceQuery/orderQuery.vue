@@ -134,7 +134,8 @@ const renderChart = () => {
 
     const option = {
         title: {
-            text: '订单收益随时间变化'
+            text: '订单收益随时间变化',
+            left: 'center'
         },
         tooltip: {
             trigger: 'axis'
@@ -189,7 +190,7 @@ watch(activeName, async (val) => {
 </script>
 
 <template>
-    <div class="title">订单查询</div>
+    <div class="title">运输优先级查询</div>
     <div class="main">
         <div class="form">
             <el-form :model="queryParam" :rules="rules" ref="formRef" label-width="auto" style="max-width: 600px">
@@ -235,10 +236,10 @@ watch(activeName, async (val) => {
             <div v-else>
                 <div class="basic" v-show="activeName === '1'">
                     <el-table v-loading="loading" :data="queryRes.orders" row-key="orderKey" style="width: 100%">
-                        <el-table-column prop="orderKey" label="orderkey"></el-table-column>
-                        <el-table-column prop="revenue" label="收入"></el-table-column>
-                        <el-table-column prop="orderDate" label="订单日期"></el-table-column>
-                        <el-table-column prop="shipPriority" label="优先级"></el-table-column>
+                        <el-table-column prop="orderKey" label="订单key"></el-table-column>
+                        <el-table-column prop="revenue" label="总潜在收入"></el-table-column>
+                        <el-table-column prop="orderDate" label="下单日期"></el-table-column>
+                        <el-table-column prop="shipPriority" label="运输优先级"></el-table-column>
                     </el-table>
                 </div>
                 <div class="line-chart" v-show="activeName === '2'" ref="lineChartRef"
