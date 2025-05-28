@@ -133,7 +133,7 @@ const cancelDetail = () => {
                 <el-table-column prop="name" label="姓名" />
                 <el-table-column prop="nationName" label="国家" sortable :filters="nationFilter"
                     :filter-method="nationFilterHandler" />
-                <el-table-column label="index" >
+                <el-table-column label="操作" >
                     <template #default="scoped">
                         <el-button type="text" @click="getCliDetail(scoped.row.cuskey)">详情</el-button>
                     </template>

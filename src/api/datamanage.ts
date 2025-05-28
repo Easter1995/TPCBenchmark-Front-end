@@ -23,6 +23,27 @@ export function getTables(): FlyPromise<ITableResponse<ITableInfo[]>> {
 }
 
 /**
+ * 获取可导出的表格
+ */
+export function getExportableTables(): FlyPromise<ITableResponse<[]>> {
+  return fly.get('/export/tables')
+}
+
+/**
+ * 
+ * @param tableName 表名
+ * @param exportPath 路径 
+ */
+export function exportTable(tableName: string, exportPath: string): FlyPromise<any> {
+  const encodedPath = encodeURIComponent(exportPath)
+  const tableNameL = tableName.trim().toLowerCase()
+  return fly.get(`/export/csv/${tableNameL}?exportPath=${encodedPath}`, null, {
+    timeout: 120000
+  })
+}
+
+
+/**
  * 导入数据
  */
 export async function importFile(

@@ -13,6 +13,8 @@ export default defineConfig({
     }),
   ],
   server: {
+    host: true,
+    port: 5173,
     proxy: {
       '/users': {
         target: 'http://localhost:8085'
@@ -30,6 +32,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false
       },
+      '/export': {
+        target: 'http://localhost:8085',
+        changeOrigin: true,
+        secure: false
+      }
     }
   },
   resolve: {

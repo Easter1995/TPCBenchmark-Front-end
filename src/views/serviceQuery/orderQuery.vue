@@ -224,7 +224,7 @@ watch(activeName, async (val) => {
                 <el-button type="info" @click="resetQuery">重置</el-button>
             </div>
         </div>
-        <div class="tab">
+        <div class="tab" v-show="queryRes.count > 0">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="基本信息" name="1"></el-tab-pane>
                 <el-tab-pane label="折线图" name="2"></el-tab-pane>
