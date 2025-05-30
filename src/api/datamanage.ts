@@ -19,7 +19,9 @@ export function createTable(tableName: string, columns: Array<ITableKeyConstrain
  * 获取全部表格
  */
 export function getTables(): FlyPromise<ITableResponse<ITableInfo[]>> {
-  return fly.get('/table/allTables')
+  return fly.get('/table/allTables', null, {
+    timeout: 180000
+  })
 }
 
 /**

@@ -71,22 +71,44 @@ const routes = [
             {
                 path: '/bussinessQuery',
                 name: 'bussinessQuery',
-                redirect: '/bussinessQuery/client',
+                redirect: '/bussinessQuery/tpch/client',
                 children: [
                     {
-                        path: 'client',
-                        name: 'client',
-                        component: () => import('@/views/serviceQuery/userQuery.vue'),
+                        path: 'tpch',
+                        name: 'tpch',
+                        children: [
+                            {
+                                path: 'client',
+                                name: 'client',
+                                component: () => import('@/views/serviceQuery/userQuery.vue'),
+                            },
+                            {
+                                path: 'order',
+                                name: 'order',
+                                component: () => import('@/views/serviceQuery/orderQuery.vue'),
+                            },
+                            {
+                                path: 'part',
+                                name: 'part',
+                                component: () => import('@/views/serviceQuery/partQuery.vue'),
+                            }
+                        ]
                     },
                     {
-                        path: 'order',
-                        name: 'order',
-                        component: () => import('@/views/serviceQuery/orderQuery.vue'),
-                    },
-                    {
-                        path: 'part',
-                        name: 'part',
-                        component: () => import('@/views/serviceQuery/partQuery.vue'),
+                        path: 'tpcc',
+                        name: 'tpcc',
+                        children: [
+                            {
+                                path: 'neworder',
+                                name: 'neworder',
+                                component: () => import('@/views/serviceQuery/processNewOrder.vue'),
+                            },
+                            {
+                                path: 'payment',
+                                name: 'payment',
+                                component: () => import('@/views/serviceQuery/processPayment.vue'),
+                            }
+                        ]
                     }
                 ]
             }

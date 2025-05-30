@@ -40,7 +40,7 @@ export interface IClientQuery {
 }
 
 /**
- * 订单 ORDER 或零部件 PART 相关的查询
+ * TPC-H
  */
 export interface IShipPriorQuery {
     marketSegment: string,
@@ -69,4 +69,76 @@ export interface ISmallOrderQuery {
 
 export interface ISmallOrderRes {
     avgrevenue: number
+}
+
+/**
+ * TPC-C
+ */
+export interface INewOrder {
+    warehouseId: number | null,
+    districtId: number | null,
+    customerId: number | null,
+    items: Array<INewOrderItem>
+}
+
+export interface INewOrderItem {
+    itemId: number | null,
+    supplierId: number | null,
+    quantity: number | null
+}
+
+export interface INewOrderRes {
+    orderId: number,
+    warehouseId: number,
+    districtId: number,
+    customerId: number,
+    entryDate: string,
+    totalAmount: number,
+    executionTimeMs: number,
+    sqlDetails: Array<sqlDetailsItem>
+    items: Array<INewOrderResItem>
+}
+
+export interface INewOrderResItem {
+    itemId: number,
+    itemName: string,
+    supplierId: number,
+    quantity: number,
+    amount: number,
+    stockStatus: string,
+    brand: string
+}
+
+export interface sqlDetailsItem {
+    sqlType: string,
+    description: string,
+    executionTimeMs: number
+}
+
+export interface IPayment {
+    warehouseId: number,
+    districtId: number,
+    customerId: number,
+    paymentAmount: number
+}
+
+export interface IPaymentRes {
+    warehouseId: number,
+    warehouseName: string,
+    districtId: number,
+    districtName: string,
+    customerId: number,
+    customerName: string,
+    paymentDate: string,
+    paymentAmount: number,
+    customerBalanceBeforePayment: number,
+    customerBalanceAfterPayment: number,
+    executionTimeMs: number,
+    sqlDetails: Array<sqlDetailsItem>
+}
+
+export interface sqlDetailsItem {
+    sqlType: string,
+    description: string,
+    executionTimeMs: number
 }

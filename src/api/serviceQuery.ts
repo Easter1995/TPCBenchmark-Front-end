@@ -1,7 +1,8 @@
-import { IClientInfo, IClientQuery, IQueryResponse, IShipPriorQuery, IShipPriorRes, ISmallOrderQuery, ISmallOrderRes } from "@/typings/service";
+import { IClientInfo, IClientQuery, INewOrder, INewOrderRes, IPayment, IPaymentRes, IQueryResponse, IShipPriorQuery, IShipPriorRes, ISmallOrderQuery, ISmallOrderRes } from "@/typings/service";
 import { FlyPromise } from "flyio";
 import fly from "@/utils/fly";
 
+// TPC-H查询
 export function getClientInfo(param: IClientQuery): FlyPromise<IQueryResponse<IClientInfo>> {
     return fly.post(
         '/query/client-info', param
@@ -27,5 +28,18 @@ export function getSmallOrder(param: ISmallOrderQuery): FlyPromise<IQueryRespons
         '/query/small-order', param, {
             timeout: 180000
         }
+    )
+}
+
+// TPC-C查询
+export function addOrder(param: INewOrder): FlyPromise<IQueryResponse<INewOrderRes>> {
+    return fly.post(
+        '/tpcc/new-order', param
+    )
+}
+
+export function updatePayment(param: IPayment): FlyPromise<IQueryResponse<IPaymentRes>> {
+    return fly.post(
+        '/tpcc/payment', param
     )
 }

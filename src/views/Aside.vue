@@ -33,8 +33,7 @@ const backToHome = () => {
             </el-icon>
             <div class="text">电商数据管理系统 </div>
         </button>
-        <el-menu router :default-active="$route.path"
-            style="border: none; flex-grow: 1">
+        <el-menu router :default-active="$route.path" style="border: none; flex-grow: 1">
             <el-sub-menu v-if="userInfo.role === 'ADMIN'" index="1">
                 <template #title>
                     <el-icon>
@@ -77,7 +76,9 @@ const backToHome = () => {
                     <span>数据上传</span>
                 </el-menu-item>
                 <el-menu-item index="/datamanage/export">
-                    <el-icon><Download /></el-icon>
+                    <el-icon>
+                        <Download />
+                    </el-icon>
                     <span>数据导出</span>
                 </el-menu-item>
             </el-sub-menu>
@@ -88,18 +89,37 @@ const backToHome = () => {
                     </el-icon>
                     <span>业务查询</span>
                 </template>
-                <el-menu-item index="/bussinessQuery/client">
-                    <el-icon><InfoFilled /></el-icon>
-                    <span>客户查询</span>
-                </el-menu-item>
-                <el-menu-item index="/bussinessQuery/order">
-                    <el-icon><Tickets /></el-icon>
-                    <span>运输优先级查询</span>
-                </el-menu-item>
-                <el-menu-item index="/bussinessQuery/part">
-                    <el-icon><Discount /></el-icon>
-                    <span>小额订单收入查询</span>
-                </el-menu-item>
+                <el-sub-menu index="tpch">
+                    <template #title>
+                        <el-icon>
+                            <Tickets />
+                        </el-icon>
+                        <span>TPC-H 统计分析</span>
+                    </template>
+                    <el-menu-item index="/bussinessQuery/tpch/client">
+                        <span>客户查询</span>
+                    </el-menu-item>
+                    <el-menu-item index="/bussinessQuery/tpch/order">
+                        <span>运输优先级查询</span>
+                    </el-menu-item>
+                    <el-menu-item index="/bussinessQuery/tpch/part">
+                        <span>小额订单收入查询</span>
+                    </el-menu-item>
+                </el-sub-menu>
+                <el-sub-menu index="tpcc">
+                    <template #title>
+                        <el-icon>
+                            <Discount />
+                        </el-icon>
+                        <span>TPC-C 事务查询</span>
+                    </template>
+                    <el-menu-item index="/bussinessQuery/tpcc/neworder">
+                        <span>新增订货交易</span>
+                    </el-menu-item>
+                    <el-menu-item index="/bussinessQuery/tpcc/payment">
+                        <span>更新账户余额</span>
+                    </el-menu-item>
+                </el-sub-menu>
             </el-sub-menu>
             <el-sub-menu index="5">
                 <template #title>
@@ -118,12 +138,14 @@ const backToHome = () => {
     display: flex;
     flex-direction: column;
 
-    .text, .el-icon {
+    .text,
+    .el-icon {
         color: #000000;
         transition: color 0.3s ease-in-out;
     }
 
-    .text:hover, .el-icon:hover {
+    .text:hover,
+    .el-icon:hover {
         color: #409eff;
     }
 }

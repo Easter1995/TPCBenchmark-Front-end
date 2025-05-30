@@ -36,6 +36,11 @@ export default defineConfig({
         target: 'http://localhost:8085',
         changeOrigin: true,
         secure: false
+      },
+      '/tpcc': {
+        target: 'http://localhost:8085',
+        changeOrigin: true,
+        secure: false
       }
     }
   },
