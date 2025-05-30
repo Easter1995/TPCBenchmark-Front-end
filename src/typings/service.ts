@@ -109,17 +109,11 @@ export interface INewOrderResItem {
     brand: string
 }
 
-export interface sqlDetailsItem {
-    sqlType: string,
-    description: string,
-    executionTimeMs: number
-}
-
 export interface IPayment {
-    warehouseId: number,
-    districtId: number,
-    customerId: number,
-    paymentAmount: number
+    warehouseId: number | null,
+    districtId: number | null,
+    customerId: number | null,
+    paymentAmount: number | null
 }
 
 export interface IPaymentRes {

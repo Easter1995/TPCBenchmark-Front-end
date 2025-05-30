@@ -95,12 +95,22 @@ const onSubmit = async () => {
             const { data } = await addOrder(neworderParam)
             newOrderRes.value = data.data
             loading.close()
-            ElNotification({
-                type: 'success',
-                message: data.message
-            })
+            if (data.data) {
+                ElNotification({
+                    type: 'success',
+                    message: data.message
+                })
+            } else {
+                ElNotification({
+                    type: 'error',
+                    message: data.message
+                })
+            }
         } catch (e) {
-            console.log(e)
+            ElNotification({
+                type: 'error',
+                message: e
+            })
         }
     } catch {
         return

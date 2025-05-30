@@ -121,14 +121,14 @@ const backToHome = () => {
                     </el-menu-item>
                 </el-sub-menu>
             </el-sub-menu>
-            <el-sub-menu index="5">
+            <!-- <el-sub-menu index="5">
                 <template #title>
                     <el-icon>
                         <DataAnalysis />
                     </el-icon>
                     <span>业务分析</span>
                 </template>
-            </el-sub-menu>
+            </el-sub-menu> -->
         </el-menu>
     </div>
 </template>
