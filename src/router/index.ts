@@ -28,6 +28,34 @@ const routes = [
                 name: 'home-default',
                 component: () => import('@/views/sysManage/index.vue')
             },
+            // 系统管理
+            {
+                path: '/sysmanage',
+                name: 'sysmanage',
+                redirect: '/sysmanage/connection',
+                children: [
+                    {
+                        path: 'connection',
+                        name: 'connection',
+                        component: () => import('@/views/sysManage/activeConnection.vue')
+                    },
+                    {
+                        path: 'variable',
+                        name: 'variable',
+                        component: () => import('@/views/sysManage/systemVariable.vue')
+                    },
+                    {
+                        path: 'status',
+                        name: 'status',
+                        component: () => import('@/views/sysManage/systemStatus.vue')
+                    },
+                    {
+                        path: 'physical',
+                        name: 'physical',
+                        component: () => import('@/views/sysManage/tableInfo.vue')
+                    },
+                ]
+            },
             // 用户管理
             {
                 path: '/usermanage',

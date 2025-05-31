@@ -7,15 +7,16 @@ import {
     Delete,
     PieChart,
     Service,
-    DataAnalysis,
-    Menu as IconMenu,
+    FolderChecked,
     User,
     Setting,
     Upload,
     Download,
-    InfoFilled,
+    Link,
     Tickets,
-    Discount
+    Discount,
+    Sunset,
+    Apple
 } from '@element-plus/icons-vue'
 
 const userInfo = getUserInfo()
@@ -41,6 +42,30 @@ const backToHome = () => {
                     </el-icon>
                     <span>系统管理</span>
                 </template>
+                <el-menu-item index="/sysmanage/connection">
+                    <el-icon>
+                        <Link />
+                    </el-icon>
+                    <span>数据库连接</span>
+                </el-menu-item>
+                <el-menu-item index="/sysmanage/variable">
+                    <el-icon>
+                        <FolderChecked />
+                    </el-icon>
+                    <span>数据库系统变量</span>
+                </el-menu-item>
+                <el-menu-item index="/sysmanage/status">
+                    <el-icon>
+                        <Sunset />
+                    </el-icon>
+                    <span>数据库状态变量</span>
+                </el-menu-item>
+                <el-menu-item index="/sysmanage/physical">
+                    <el-icon>
+                        <Apple />
+                    </el-icon>
+                    <span>数据库表物理信息</span>
+                </el-menu-item>
             </el-sub-menu>
             <el-sub-menu v-if="userInfo.role === 'ADMIN'" index="2">
                 <template #title>
