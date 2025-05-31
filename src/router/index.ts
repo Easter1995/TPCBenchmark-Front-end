@@ -54,6 +54,11 @@ const routes = [
                         name: 'physical',
                         component: () => import('@/views/sysManage/tableInfo.vue')
                     },
+                    {
+                        path: 'modify',
+                        name: 'modify',
+                        component: () => import('@/views/sysManage/modifyConnection.vue')
+                    }
                 ]
             },
             // 用户管理

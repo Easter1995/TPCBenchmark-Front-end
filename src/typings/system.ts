@@ -62,3 +62,16 @@ export interface PhysicalStorage {
     createStatement: string,
     dataDirectory: string
 }
+
+export interface IModifyQuery {
+    variableName: string,
+    timeout: string
+}
+
+export interface IModifyRes {
+    newValue: number,
+    variableName: string,
+    success: true,
+    oldValue: string,
+    message: string
+}

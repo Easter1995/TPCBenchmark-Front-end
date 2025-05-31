@@ -16,7 +16,8 @@ import {
     Tickets,
     Discount,
     Sunset,
-    Apple
+    Apple,
+    Operation
 } from '@element-plus/icons-vue'
 
 const userInfo = getUserInfo()
@@ -65,6 +66,12 @@ const backToHome = () => {
                         <Apple />
                     </el-icon>
                     <span>数据库表物理信息</span>
+                </el-menu-item>
+                <el-menu-item index="/sysmanage/modify">
+                    <el-icon>
+                        <Operation />
+                    </el-icon>
+                    <span>修改timeout参数</span>
                 </el-menu-item>
             </el-sub-menu>
             <el-sub-menu v-if="userInfo.role === 'ADMIN'" index="2">

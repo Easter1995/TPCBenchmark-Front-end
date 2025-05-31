@@ -6,7 +6,6 @@ import { reactive, ref } from 'vue';
 
 
 const param = reactive({
-    schemaName: null,
     tableName: null
 })
 
@@ -14,9 +13,9 @@ const res = ref<IPhysical | null>(null)
 const formRef = ref<FormInstance>()
 
 const rules = reactive<FormRules<any>>({
-    schemaName: [
-        { required: true, message: '必须填写', trigger: 'blur' }
-    ],
+    // schemaName: [
+    //     { required: true, message: '必须填写', trigger: 'blur' }
+    // ],
     tableName: [
         { required: true, message: '必须填写', trigger: 'blur' }
     ]
@@ -29,8 +28,8 @@ const onSubmit = async () => {
             lock: true,
             text: '查询中',
         })
-        if (param.schemaName && param.tableName) {
-            const { data } = await getPhysicalInfo(param.schemaName, param.tableName)
+        if (param.tableName) {
+            const { data } = await getPhysicalInfo(param.tableName)
             if (data.data === null) {
                 ElNotification.error({
                     message: '暂无该表相关数据'
@@ -46,7 +45,6 @@ const onSubmit = async () => {
 
 const onCancel = () => {
     formRef.value?.clearValidate()
-    param.schemaName = null
     param.tableName = null
 }
 
@@ -58,11 +56,11 @@ const onCancel = () => {
         <div class="inputs">
             <el-form ref="formRef" :model="param" :rules="rules">
                 <el-row :gutter="10">
-                    <el-col :span="8">
+                    <!-- <el-col :span="8">
                         <el-form-item label="schemaName" prop="schemaName">
                             <el-input v-model="param.schemaName"></el-input>
                         </el-form-item>
-                    </el-col>
+                    </el-col> -->
                     <el-col :span="8">
                         <el-form-item label="tableName" prop="tableName">
                             <el-input v-model="param.tableName"></el-input>
