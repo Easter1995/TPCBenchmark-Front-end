@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { getPhysicalInfo } from '@/api/systemmange';
 import { IPhysical } from '@/typings/system';
-import { FormInstance, FormRules } from 'element-plus';
+import { ElLoading, ElNotification, FormInstance, FormRules } from 'element-plus';
 import { reactive, ref } from 'vue';
 
 
@@ -9,7 +9,7 @@ const param = reactive({
     schemaName: null,
     tableName: null
 })
-const loading = ref(false)
+
 const res = ref<IPhysical | null>(null)
 const formRef = ref<FormInstance>()
 
@@ -25,12 +25,20 @@ const rules = reactive<FormRules<any>>({
 const onSubmit = async () => {
     try {
         await formRef.value?.validate()
+        const loading = ElLoading.service({
+            lock: true,
+            text: '查询中',
+        })
         if (param.schemaName && param.tableName) {
-            loading.value = true
             const { data } = await getPhysicalInfo(param.schemaName, param.tableName)
+            if (data.data === null) {
+                ElNotification.error({
+                    message: '暂无该表相关数据'
+                })
+            }
             res.value = data.data
-            loading.value = false
         }
+        loading.close()
     } catch {
         return
     }
@@ -70,7 +78,7 @@ const onCancel = () => {
         <div class="result" v-show="res !== null">
             <el-divider></el-divider>
             <div class="sub-title">indexes: </div>
-            <div class="content">
+            <div class="content" style="margin-bottom: 26px;">
                 <el-table :data="res?.indexes">
                     <el-table-column prop="INDEX_NAME" label="INDEX_NAME"></el-table-column>
                     <el-table-column prop="COLUMN_NAME" label="COLUMN_NAME"></el-table-column>
@@ -79,36 +87,59 @@ const onCancel = () => {
                     <el-table-column prop="CARDINALITY" label="CARDINALITY"></el-table-column>
                 </el-table>
             </div>
-            <el-divider></el-divider>
             <div class="sub-title">tableInfo: </div>
             <div class="content">
-                TABLE_CATALOG: {{ res?.tableInfo.TABLE_CATALOG }} &nbsp;
-                TABLE_SCHEMA: {{ res?.tableInfo.TABLE_SCHEMA }} &nbsp;
-                TABLE_NAME: {{ res?.tableInfo.TABLE_NAME }} &nbsp;
-                TABLE_TYPE: {{ res?.tableInfo.TABLE_TYPE }} <br>
-                ENGINE: {{ res?.tableInfo.ENGINE }} &nbsp;
-                VERSION: {{ res?.tableInfo.VERSION }} &nbsp;
-                ROW_FORMAT: {{ res?.tableInfo.ROW_FORMAT }} &nbsp;
-                TABLE_ROWS: {{ res?.tableInfo.TABLE_ROWS }} <br>
-                AVG_ROW_LENGTH: {{ res?.tableInfo.AVG_ROW_LENGTH }} &nbsp;
-                DATA_LENGTH: {{ res?.tableInfo.DATA_LENGTH }} &nbsp;
-                MAX_DATA_LENGTH: {{ res?.tableInfo.MAX_DATA_LENGTH }} &nbsp;
-                INDEX_LENGTH: {{ res?.tableInfo.INDEX_LENGTH }} <br>
-                DATA_FREE: {{ res?.tableInfo.DATA_FREE }} &nbsp;
-                AUTO_INCREMENT: {{ res?.tableInfo.AUTO_INCREMENT }} <br>
-                CREATE_TIME: {{ new Date(res!.tableInfo.CREATE_TIME).toLocaleString() }} &nbsp;
-                UPDATE_TIME: {{ new Date(res!.tableInfo.UPDATE_TIME).toLocaleString() }} &nbsp;
-                CHECK_TIME: {{ new Date(res!.tableInfo.CHECK_TIME).toLocaleString() }} <br>
-                TABLE_COLLATION: {{ res?.tableInfo.TABLE_COLLATION }} &nbsp;
-                CHECKSUM: {{ res?.tableInfo.CHECKSUM }} &nbsp;
-                CREATE_OPTIONS: {{ res?.tableInfo.CREATE_OPTIONS }} <br>
-                TABLE_COMMENT: {{ res?.tableInfo.TABLE_COMMENT }} &nbsp;
+                <span class="sec-title">TABLE_CATALOG:</span>
+                {{ res?.tableInfo.TABLE_CATALOG }} &nbsp;
+                <span class="sec-title">TABLE_SCHEMA: </span>
+                {{ res?.tableInfo.TABLE_SCHEMA }} &nbsp;
+                <span class="sec-title">TABLE_NAME: </span>
+                {{ res?.tableInfo.TABLE_NAME }} &nbsp;
+                <span class="sec-title">TABLE_TYPE: </span>
+                {{ res?.tableInfo.TABLE_TYPE }} <br>
+                <span class="sec-title">ENGINE: </span>
+                {{ res?.tableInfo.ENGINE }} &nbsp;
+                <span class="sec-title">VERSION: </span>
+                {{ res?.tableInfo.VERSION }} &nbsp;
+                <span class="sec-title">ROW_FORMAT: </span>
+                {{ res?.tableInfo.ROW_FORMAT }} &nbsp;
+                <span class="sec-title">TABLE_ROWS: </span>
+                {{ res?.tableInfo.TABLE_ROWS }} <br>
+                <span class="sec-title">AVG_ROW_LENGTH: </span>
+                {{ res?.tableInfo.AVG_ROW_LENGTH }} &nbsp;
+                <span class="sec-title">DATA_LENGTH: </span>
+                {{ res?.tableInfo.DATA_LENGTH }} &nbsp;
+                <span class="sec-title">MAX_DATA_LENGTH: </span>
+                {{ res?.tableInfo.MAX_DATA_LENGTH }} &nbsp;
+                <span class="sec-title">INDEX_LENGTH: </span>
+                {{ res?.tableInfo.INDEX_LENGTH }} <br>
+                <span class="sec-title">DATA_FREE: </span>
+                {{ res?.tableInfo.DATA_FREE }} &nbsp;
+                <span class="sec-title">AUTO_INCREMENT: </span>
+                {{ res?.tableInfo.AUTO_INCREMENT }} <br>
+                <span class="sec-title">CREATE_TIME: </span>
+                {{ res?.tableInfo.CREATE_TIME ? new Date(res!.tableInfo.CREATE_TIME).toLocaleString() :
+                    '暂无' }} &nbsp;
+                <span class="sec-title">UPDATE_TIME: </span>
+                {{ res?.tableInfo.UPDATE_TIME ? new Date(res!.tableInfo.UPDATE_TIME).toLocaleString() :
+                    '暂无' }} &nbsp;
+                <span class="sec-title">CHECK_TIME: </span>
+                {{ res?.tableInfo.CHECK_TIME ? new Date(res!.tableInfo.CHECK_TIME).toLocaleString() : '暂无'
+                }} <br>
+                <span class="sec-title">TABLE_COLLATION: </span>
+                {{ res?.tableInfo.TABLE_COLLATION }} &nbsp;
+                <span class="sec-title">CHECKSUM: </span>
+                {{ res?.tableInfo.CHECKSUM }} &nbsp;
+                <span class="sec-title">CREATE_OPTIONS: </span>
+                {{ res?.tableInfo.CREATE_OPTIONS }} <br>
+                <span class="sec-title">TABLE_COMMENT: </span>
+                {{ res?.tableInfo.TABLE_COMMENT }} &nbsp;
             </div>
             <el-divider></el-divider>
             <div class="sub-title">physicalStorage</div>
             <div class="content">
-                createStatement: <br> {{ res?.physicalStorage.createStatement }}
-                dataDirectory: <br> {{ res?.physicalStorage.dataDirectory }}
+                <span class="sec-title">createStatement: </span> <br> {{ res?.physicalStorage.createStatement }} <br>
+                <span class="sec-title">dataDirectory: </span> <br> {{ res?.physicalStorage.dataDirectory }}
             </div>
         </div>
     </div>
@@ -139,6 +170,10 @@ const onCancel = () => {
             font-size: 14px;
             line-height: 30px;
             color: #616161;
+        }
+
+        .sec-title {
+            font-weight: bold;
         }
     }
 }

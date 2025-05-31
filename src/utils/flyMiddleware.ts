@@ -17,14 +17,21 @@ export function flyInit(fly: Fly) {
     })
     // 响应拦截
     fly.interceptors.response.use(
-        (res) => res,
+        (res) => {
+            if (res?.data?.code === 403) {
+                router.replace('/denied');
+                // 可选：中断请求链，防止后续再处理这个异常
+                return new Promise(() => { });
+            }
+            return res;
+        },
         (err: unknown) => {
             const flyioError = err as {
                 status?: number;
                 response?: { headers: Record<string, string> };
             };
 
-            if (flyioError.status === 401 && flyioError.response?.headers['x-token-expired']) {
+            if (flyioError.status === 401 || flyioError.response?.headers['x-token-expired']) {
                 delUserInfo();
                 ElNotification.error({
                     title: '认证过期',

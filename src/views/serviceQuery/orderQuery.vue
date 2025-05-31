@@ -35,7 +35,10 @@ const queryParam = reactive<IShipPriorQuery>({
 })
 const queryRes = ref<IShipPriorRes>({
     count: 0,
-    orders: []
+    orders: [],
+    executionTimeMs: 0,
+    throughputQPS: 0,
+    avgLatencyMs: 0
 })
 
 const resizeChart = () => {
@@ -224,6 +227,16 @@ watch(activeName, async (val) => {
                 <el-button type="info" @click="resetQuery">重置</el-button>
             </div>
         </div>
+        <div v-show="queryRes.count > 0">
+            <el-divider></el-divider>
+            <div class="sub-title">查询性能: </div>
+            <div class="content">
+                <span class="sec-title">执行时长: </span>{{ queryRes.executionTimeMs }}ms &nbsp;
+                <span class="sec-title">吞吐量(QPS): </span>{{ queryRes.throughputQPS.toFixed(3) }}次/s &nbsp;
+                <span class="sec-title">平均延迟时间: </span> {{ queryRes.avgLatencyMs.toFixed(5) }}ms
+            </div>
+            <el-divider></el-divider>
+        </div>
         <div class="tab" v-show="queryRes.count > 0">
             <el-tabs v-model="activeName">
                 <el-tab-pane label="基本信息" name="1"></el-tab-pane>
@@ -267,5 +280,21 @@ watch(activeName, async (val) => {
 .line-chart,
 .bar-chart {
     padding: 10px;
+}
+
+.sub-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.content {
+    font-size: 14px;
+    line-height: 30px;
+    color: #616161;
+}
+
+.sec-title {
+    font-weight: bold;
 }
 </style>

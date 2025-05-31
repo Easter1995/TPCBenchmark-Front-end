@@ -94,7 +94,7 @@ const backToHome = () => {
                     </el-icon>
                     <span>数据管理</span>
                 </template>
-                <el-menu-item index="/datamanage/import">
+                <el-menu-item v-if="userInfo.role === 'ADMIN'" index="/datamanage/import">
                     <el-icon>
                         <Upload />
                     </el-icon>

@@ -33,7 +33,10 @@ const clientInfoRes = ref<IClientInfo>({
     pageSize: 20,
     currentPage: 1,
     total: 0,
-    clientInfoList: []
+    clientInfoList: [],
+    executionTimeMs: 0,
+    throughputQPS: 0,
+    avgLatencyMs: 0
 })
 const nationFilter = ref<Ifilter[]>([])
 
@@ -122,6 +125,16 @@ const cancelDetail = () => {
                 @keyup.enter="handleNSearch" />
         </div>
         <div class="table" style="width: 100%;">
+            <div v-show="clientInfoRes.total > 0">
+                <el-divider></el-divider>
+                <div class="sub-title">查询性能: </div>
+                <div class="content">
+                    <span class="sec-title">执行时长: </span>{{ clientInfoRes.executionTimeMs }}ms &nbsp;
+                    <span class="sec-title">吞吐量(QPS): </span>{{ clientInfoRes.throughputQPS.toFixed(5) }}次/s &nbsp;
+                    <span class="sec-title">平均延迟时间: </span> {{ clientInfoRes.avgLatencyMs.toFixed(5) }}ms
+                </div>
+                <el-divider></el-divider>
+            </div>
             <el-table :data="clientInfos" row-key="cuskey" v-loading="isLoading"
                 :header-cell-style="{ textAlign: 'center' }" style="width: 100%; overflow-y: auto;" height="100%">
                 <el-table-column label="index" width="80">
@@ -133,7 +146,7 @@ const cancelDetail = () => {
                 <el-table-column prop="name" label="姓名" />
                 <el-table-column prop="nationName" label="国家" sortable :filters="nationFilter"
                     :filter-method="nationFilterHandler" />
-                <el-table-column label="操作" >
+                <el-table-column label="操作">
                     <template #default="scoped">
                         <el-button type="text" @click="getCliDetail(scoped.row.cuskey)">详情</el-button>
                     </template>
@@ -148,7 +161,9 @@ const cancelDetail = () => {
     </div>
     <div class="detail" v-if="showDetail">
         <div class="header" @click="cancelDetail">
-            <el-icon><Back /></el-icon>
+            <el-icon>
+                <Back />
+            </el-icon>
             <div class="title">客户信息详情</div>
         </div>
         <div class="detail-main">
@@ -198,12 +213,14 @@ const cancelDetail = () => {
 
 .detail {
     margin-top: 40px;
+
     .header {
         display: flex;
         align-items: center;
         gap: 10px;
         cursor: pointer;
         font-size: 16px;
+
         &:hover {
             color: var(--el-color-primary);
         }
@@ -215,12 +232,29 @@ const cancelDetail = () => {
         display: flex;
         flex-direction: column;
         gap: 30px;
+
         .row {
             display: flex;
             gap: 30px;
             border-bottom: 2px solid #dbdbdb;
         }
     }
+}
+
+.sub-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.content {
+    font-size: 14px;
+    line-height: 30px;
+    color: #616161;
+}
+
+.sec-title {
+    font-weight: bold;
 }
 
 ::v-deep .cell {

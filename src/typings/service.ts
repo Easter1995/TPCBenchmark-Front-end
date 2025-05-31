@@ -29,7 +29,10 @@ export interface IClientInfo {
     clientInfoList: Array<IClientInfoList>
     total: number,
     currentPage: number,
-    pageSize: number
+    pageSize: number,
+    executionTimeMs: number,
+    throughputQPS: number,
+    avgLatencyMs: number
 }
 
 export interface IClientQuery {
@@ -53,12 +56,15 @@ interface Oinfo {
     orderKey: number,
     revenue: number,
     orderDate: string,
-    shipPriority: number
+    shipPriority: number,
 }
 
 export interface IShipPriorRes {
     count: number,
-    orders: Array<Oinfo>
+    orders: Array<Oinfo>,
+    executionTimeMs: number,
+    throughputQPS: number,
+    avgLatencyMs: number
 }
 
 export interface ISmallOrderQuery {
@@ -68,7 +74,10 @@ export interface ISmallOrderQuery {
 }
 
 export interface ISmallOrderRes {
-    avgrevenue: number
+    avgrevenue: number,
+    executionTimeMs: number,
+    throughputQPS: number,
+    avgLatencyMs: number
 }
 
 /**

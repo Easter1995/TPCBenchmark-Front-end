@@ -15,5 +15,7 @@ export function getStatus(): FlyPromise<ISysResponse<Array<IVariable>>> {
 }
 
 export function getPhysicalInfo(schemaName: string, tableName: string): FlyPromise<ISysResponse<IPhysical>> {
-    return fly.get(`/db/tables/${tableName}?schemaName=${schemaName}`)
+    return fly.get(`/db/tables/${tableName}?schemaName=${schemaName}`, null, {
+        timeout: 60000
+    })
 }

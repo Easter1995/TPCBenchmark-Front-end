@@ -261,6 +261,22 @@ const onCancel = () => {
     margin-top: 10px;
 }
 
+.sub-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.content {
+    font-size: 14px;
+    line-height: 30px;
+    color: #616161;
+}
+
+.sec-title {
+    font-weight: bold;
+}
+
 ::v-deep .cell {
     text-align: center;
 }
