@@ -31,6 +31,24 @@ export function getSmallOrder(param: ISmallOrderQuery): FlyPromise<IQueryRespons
     )
 }
 
+export function exportCliInfo(param: IClientInfo, exportPath: string): FlyPromise<IQueryResponse<null>> {
+    const encodedPath = encodeURIComponent(exportPath)
+    return fly.post(
+        `/export/client-info?exportPath=${encodedPath}`, param, {
+            timeout: 120000
+        }
+    )
+}
+
+export function exportShipPrior(param: IShipPriorRes, exportPath: string): FlyPromise<IQueryResponse<null>> {
+    const encodedPath = encodeURIComponent(exportPath)
+    return fly.post(
+        `/export/shipping-priority?exportPath=${encodedPath}`, param, {
+            timeout: 120000
+        }
+    )
+}
+
 // TPC-C查询
 export function addOrder(param: INewOrder): FlyPromise<IQueryResponse<INewOrderRes>> {
     return fly.post(

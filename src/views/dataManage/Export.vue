@@ -6,7 +6,6 @@ import { exportTable, getExportableTables } from '@/api/datamanage';
 
 const tables = ref<Array<any>>([])
 const isLoading = ref(true)
-const fullscreenLoading = ref(false)
 const dialogVisible = ref(false)
 
 const exportParam = reactive({
@@ -34,11 +33,17 @@ const cancelExport = () => {
 }
 
 const submitExport = async () => {
+    if (exportParam.exportPath.trim() === '') {
+        ElNotification.error({
+            message: '路径不能为空'
+        })
+        return
+    }
     const loading = ElLoading.service({
         lock: true,
         text: '导出中',
     })
-    const { data } = await exportTable(exportParam.tableName, exportParam.exportPath)
+    const { data } = await exportTable(exportParam.tableName, exportParam.exportPath.trim())
     loading.close()
     if (data) {
         ElNotification.success({

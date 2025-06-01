@@ -2,7 +2,8 @@
 import { IClientInfo, IClientInfoList } from '@/typings/service';
 import { onMounted, reactive, ref } from 'vue';
 import { Search, Back } from '@element-plus/icons-vue'
-import { getClientInfo, getTableInfo } from '@/api/serviceQuery';
+import { exportCliInfo, getClientInfo, getTableInfo } from '@/api/serviceQuery';
+import { ElLoading, ElNotification } from 'element-plus';
 
 interface Ifilter {
     text: string,
@@ -38,6 +39,8 @@ const clientInfoRes = ref<IClientInfo>({
     throughputQPS: 0,
     avgLatencyMs: 0
 })
+const exportPath = ref('')
+const dialogVisible = ref(false)
 const nationFilter = ref<Ifilter[]>([])
 
 const nationFilterHandler = (value: string, row: IClientInfoList) => {
@@ -113,11 +116,54 @@ const cancelDetail = () => {
     showDetail.value = false
 }
 
+const onExport = () => {
+    exportPath.value = ''
+    dialogVisible.value = true
+}
+
+const cancelExport = () => {
+    dialogVisible.value = false
+}
+
+const submitExport = async () => {
+    if (exportPath.value.trim() === '') {
+        ElNotification.error({
+            message: '路径不能为空'
+        })
+        return
+    }
+    const loading = ElLoading.service({
+        lock: true,
+        text: '导出中',
+    })
+    const { data } = await exportCliInfo(clientInfoRes.value, exportPath.value)
+    loading.close()
+    dialogVisible.value = false
+    if (data) {
+        ElNotification.success({
+            message: `导出成功, 文件被保存在${exportPath.value}`
+        })
+    } else {
+        ElNotification.error({
+            message: '导出出错'
+        })
+    }
+}
+
 </script>
 
 <template>
     <div class="title">客户查询</div>
     <div class="main" v-if="showDetail === false">
+        <el-dialog title="导出表" v-model="dialogVisible">
+            <div>
+                <el-input style="margin-bottom: 20px;" v-model="exportPath" placeholder="输入导出路径"></el-input>
+            </div>
+            <div slot="footer" style="text-align: center;">
+                <el-button @click="cancelExport">取 消</el-button>
+                <el-button type="primary" @click="submitExport">确 定</el-button>
+            </div>
+        </el-dialog>
         <div class="search">
             <el-input v-model="qCliName" style="width: 300px" placeholder="search by client name" :prefix-icon="Search"
                 @keyup.enter="handleCliSearch" />
@@ -132,6 +178,9 @@ const cancelDetail = () => {
                     <span class="sec-title">执行时长: </span>{{ clientInfoRes.executionTimeMs }}ms &nbsp;
                     <span class="sec-title">吞吐量(QPS): </span>{{ clientInfoRes.throughputQPS.toFixed(5) }}次/s &nbsp;
                     <span class="sec-title">平均延迟时间: </span> {{ clientInfoRes.avgLatencyMs.toFixed(5) }}ms
+                </div>
+                <div class="btns">
+                    <el-button type="primary" @click="onExport">导出结果</el-button>
                 </div>
                 <el-divider></el-divider>
             </div>
@@ -255,6 +304,14 @@ const cancelDetail = () => {
 
 .sec-title {
     font-weight: bold;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 ::v-deep .cell {

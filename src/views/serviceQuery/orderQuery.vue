@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { getShipPrior } from '@/api/serviceQuery';
+import { exportShipPrior, getShipPrior } from '@/api/serviceQuery';
 import { IShipPriorQuery, IShipPriorRes } from '@/typings/service';
-import { FormInstance, FormRules } from 'element-plus';
+import { ElLoading, ElNotification, FormInstance, FormRules } from 'element-plus';
 import { nextTick, reactive, ref, watch } from 'vue';
 import * as echarts from 'echarts'
 
@@ -40,6 +40,43 @@ const queryRes = ref<IShipPriorRes>({
     throughputQPS: 0,
     avgLatencyMs: 0
 })
+
+const exportPath = ref('')
+const dialogVisible = ref(false)
+
+const onExport = () => {
+    exportPath.value = ''
+    dialogVisible.value = true
+}
+
+const cancelExport = () => {
+    dialogVisible.value = false
+}
+
+const submitExport = async () => {
+    if (exportPath.value.trim() === '') {
+        ElNotification.error({
+            message: '路径不能为空'
+        })
+        return
+    }
+    const loading = ElLoading.service({
+        lock: true,
+        text: '导出中',
+    })
+    const { data } = await exportShipPrior(queryRes.value, exportPath.value)
+    loading.close()
+    dialogVisible.value = false
+    if (data) {
+        ElNotification.success({
+            message: `导出成功, 文件被保存在${exportPath.value}`
+        })
+    } else {
+        ElNotification.error({
+            message: '导出出错'
+        })
+    }
+}
 
 const resizeChart = () => {
     lineChartInstance?.resize()
@@ -195,6 +232,15 @@ watch(activeName, async (val) => {
 <template>
     <div class="title">运输优先级查询</div>
     <div class="main">
+        <el-dialog title="导出表" v-model="dialogVisible">
+            <div>
+                <el-input style="margin-bottom: 20px;" v-model="exportPath" placeholder="输入导出路径"></el-input>
+            </div>
+            <div slot="footer" style="text-align: center;">
+                <el-button @click="cancelExport">取 消</el-button>
+                <el-button type="primary" @click="submitExport">确 定</el-button>
+            </div>
+        </el-dialog>
         <div class="form">
             <el-form :model="queryParam" :rules="rules" ref="formRef" label-width="auto" style="max-width: 600px">
                 <el-row>
@@ -234,6 +280,9 @@ watch(activeName, async (val) => {
                 <span class="sec-title">执行时长: </span>{{ queryRes.executionTimeMs }}ms &nbsp;
                 <span class="sec-title">吞吐量(QPS): </span>{{ queryRes.throughputQPS.toFixed(3) }}次/s &nbsp;
                 <span class="sec-title">平均延迟时间: </span> {{ queryRes.avgLatencyMs.toFixed(5) }}ms
+            </div>
+            <div class="btns">
+                <el-button type="primary" @click="onExport">导出结果</el-button>
             </div>
             <el-divider></el-divider>
         </div>
@@ -296,5 +345,13 @@ watch(activeName, async (val) => {
 
 .sec-title {
     font-weight: bold;
+}
+
+.btns {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 </style>
