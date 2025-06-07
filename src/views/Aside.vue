@@ -23,7 +23,7 @@ import {
 const userInfo = getUserInfo()
 
 const backToHome = () => {
-    router.push('/tpc')
+    router.push('/datamanage/export')
 }
 </script>
 

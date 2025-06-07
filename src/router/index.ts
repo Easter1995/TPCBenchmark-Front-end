@@ -11,7 +11,7 @@ enum Roles {
 const routes = [
     {
         path: '/',
-        redirect: '/tpc',
+        redirect: '/datamanage/export',
     },
     {
         path: '/login',

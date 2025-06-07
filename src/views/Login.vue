@@ -52,7 +52,7 @@ const doLogin = async () => {
             duration: 1000
         })
         await nextTick()
-        router.replace('/tpc')
+        router.replace('/datamanage/export')
     } catch (e) {
         console.log(e)
     }
