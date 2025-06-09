@@ -2,7 +2,7 @@
 import { ElCard, ElNotification } from 'element-plus';
 import { nextTick, ref } from 'vue';
 import { userLogin, userRegister } from '@/api/auth';
-import { getUserInfo, writeUserInfo } from '@/utils/user';
+import { writeUserInfo } from '@/utils/user';
 import router from '@/router';
 
 const username = ref('')
@@ -178,7 +178,7 @@ $primary-color: #48a3ffe3;
 }
 
 .header {
-    font-size: 38px;
+    font-size: 36px;
     color: $primary-color;
     text-align: center;
 }
